@@ -1,3 +1,4 @@
+using BookApp.Configuration;
 using BookApp.Contracts;
 using BookApp.Data;
 using BookApp.Repositories;
@@ -13,6 +14,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped(typeof(IBaseEntityRepository<>), typeof(BaseEntityRepository<>));
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 var app = builder.Build();
 

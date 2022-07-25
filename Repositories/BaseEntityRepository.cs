@@ -13,19 +13,25 @@ namespace BookApp.Repositories
         {
             this.context = context;
         }
-        public Task Add(T model)
+        public async Task Add(T model)
         {
-            throw new NotImplementedException();
+            await context.AddAsync(model);
+            await context.SaveChangesAsync();
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var model = await context.FindAsync<T>(new[] { id });
+            if(model != null)
+            {
+                context.Set<T>().Remove(model);
+                await context.SaveChangesAsync();
+            }
         }
 
-        public Task<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+        public async Task<T?> Get(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return await context.Set<T>().FirstOrDefaultAsync(expression);
         }
 
         public async Task<List<T>> GetList(System.Linq.Expressions.Expression<Func<T, bool>> expression = null)
@@ -38,9 +44,10 @@ namespace BookApp.Repositories
             return await context.Set<T>().ToListAsync();
         }
 
-        public Task Update(T model)
+        public async Task Update(T model)
         {
-            throw new NotImplementedException();
+            context.Update(model);
+            await context.SaveChangesAsync();
         }
     }
 }
