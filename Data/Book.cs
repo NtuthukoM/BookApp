@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BookApp.Models
+namespace BookApp.Data
 {
-    public class Book
+    public class Book: BaseEntity
     {
-        public int Id { get; set; }
         [Required]
         public string Title { get; set; }
         public int Year { get; set; }
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
         public string Genre { get; set; }
 

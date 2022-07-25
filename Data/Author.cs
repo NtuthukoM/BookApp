@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BookApp.Models
+namespace BookApp.Data
 {
-    public class Author
+    public class Author: BaseEntity
     {
-        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
     }

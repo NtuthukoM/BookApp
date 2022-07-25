@@ -1,7 +1,18 @@
+using BookApp.Contracts;
+using BookApp.Data;
+using BookApp.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<BookServiceContext>(options =>
+    options.UseSqlServer(connectionString));
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped(typeof(IBaseEntityRepository<>), typeof(BaseEntityRepository<>));
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
 var app = builder.Build();
 
