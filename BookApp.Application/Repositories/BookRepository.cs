@@ -26,5 +26,13 @@ namespace BookApp.Application.Repositories
                 .ProjectTo<BookVM>(configurationProvider).ToListAsync();
             return books;
         }
+
+        public async Task<BookVM> GetBookByIdAsync(int id)
+        {
+            var book = await context.Books.Include(x => x.Author)                
+                .ProjectTo<BookVM>(configurationProvider)                
+                .FirstAsync(x => x.Id == id);
+            return book;
+        }
     }
 }

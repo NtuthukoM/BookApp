@@ -1,3 +1,4 @@
+
 using BookApp.Application.Configuration;
 using BookApp.Application.Contracts;
 using BookApp.Data;
@@ -5,11 +6,22 @@ using BookApp.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+const string corsPolicy = "CorsPolicy";
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BookServiceContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddCors(opt => {
+    opt.AddPolicy(name: corsPolicy, policy =>
+    {
+        policy
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .WithOrigins("http://localhost:3000");
+    });
+});
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped(typeof(IBaseEntityRepository<>), typeof(BaseEntityRepository<>));
@@ -28,6 +40,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(corsPolicy);
 app.UseStaticFiles();
 
 app.UseRouting();

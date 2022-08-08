@@ -30,7 +30,7 @@ namespace BookApp.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var book = await bookRepository.Get(x => x.Id == id);
+            var book = await bookRepository.GetBookByIdAsync(id);
             if(book == null)
             {
                 return NotFound();
